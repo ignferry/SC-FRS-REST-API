@@ -31,14 +31,12 @@ app.get("/class/:classId", async (req, res) => {
     console.log("GET /class/:classId");
 
     let classId = req.params.classId;
-    console.log(`Class ID: ${classId}`)
 
     let selectClassRes = await client.query(selectClassQuery, [classId]);
     let classAttributes = selectClassRes.rows[0];
 
     let numberOfStudentsRes = await client.query(findNumberOfStudentsQuery, [classId]);
     let totalStudents = numberOfStudentsRes.rows[0].total_students;
-    console.log(`Total students: ${totalStudents}`)
 
     res.status(200).json(
         {
@@ -53,6 +51,8 @@ app.get("/class/:classId", async (req, res) => {
 // Register student to class
 const insertClassParticipantQuery = "INSERT INTO class_students(class_id, nim) VALUES($1, $2)"
 app.post("/class/register", async (req, res) => {
+    console.log("POST /class/register");
+
     let nim = req.body.nim;
     let classId = req.body.class_id;
     let className = req.body.class_name;
@@ -68,6 +68,8 @@ app.post("/class/register", async (req, res) => {
 
 // Set class full Message
 app.get("/message/class/full", (req, res) => {
+    console.log("GET /message/class/full");
+
     let classId = req.query.class_id;
     let className = req.query.class_name;
 
@@ -80,6 +82,8 @@ app.get("/message/class/full", (req, res) => {
 
 // Set timeout message
 app.get("/message/class/timeout", (req, res) => {
+    console.log("GET /message/class/timeout");
+
     res.status(200).json(
         {
             output_message: "Registration failed. Maximum processing time reached."
